@@ -1,8 +1,14 @@
-[![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+A project directed at finding burgers at local eateries. Utilizing Kotlin and MongoDB alongside React!
 
-# Full Stack JVM & JS App Hands-On Lab
+Environment variables required to make the project work:
 
-This repository is the code corresponding to the hands-on lab [Building a Full Stack Web App with Kotlin Multiplatform](https://play.kotlinlang.org/hands-on/Full%20Stack%20Web%20App%20with%20Kotlin%20Multiplatform/).
 
-**The master branch is to be used as a template. If you would like to see the completed project, check out the [final](https://github.com/kotlin-hands-on/jvm-js-fullstack/tree/final) branch.**
+| Variable                        | Type   | Explanation                                               | Example                                          |
+| ------------------------------- |:-----: | --------------------------------------------------------- | ------------------------------------------------ |
+| FOURSQUARE_API_TOKEN            | String | Foursquare API key                                        | fsqaaaaabbbbbbbbbccccccccccdsdddddddeeeeeeeeeed= |
+| PORT                            | Int    | Server port                                               | 9090                                             |
+| ORG_GRADLE_PROJECT_isProduction | Bool   | true for production                                       | true                                             |
+| baseURL                         | String | Webapp deployment base URL                                | burgr.remindr.com                                |
+| BURGER_UPDATE_FREQUENCY_SECONDS | Int    | How often burgers are updated (in seconds)                | 3600                                             |
+| BURGER_REQUEST_COUNT_FOURSQUARE | Int    | How many places to query at once from Foursquare (max 50) | 50                                               |
+| latitudeLongitude               | String | latitude,longitude of the area we're interested in        | 41.8781,-87.6298                                 |

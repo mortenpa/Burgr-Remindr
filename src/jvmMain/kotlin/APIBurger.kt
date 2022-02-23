@@ -6,13 +6,13 @@ import io.ktor.http.*
 
 
 suspend fun addBurgerListItem(burgerListItem: LocalBurgerItem) {
-    jsonClient.post<Unit>("http://localhost:9090/" + LocalBurgerItem.path) {
+    jsonClient.post<Unit>("https://burgr-remindr.herokuapp.com" + LocalBurgerItem.path) {
         contentType(ContentType.Application.Json)
         body = burgerListItem
     }
 }
 
 suspend fun deleteBurgerListItem(burgerListItem: LocalBurgerItem) {
-    jsonClient.delete<Unit>("http://localhost:9090/" + LocalBurgerItem.path + "/${burgerListItem.id}")
+    jsonClient.delete<Unit>("https://burgr-remindr.herokuapp.com" + LocalBurgerItem.path + "/${burgerListItem.id}")
 }
 

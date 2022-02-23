@@ -5,8 +5,8 @@ import java.time.Instant
 
 class BurgerHelper constructor(private val foursquareAPIToken: String){
     private var burgersPreviouslyUpdated = Instant.now()
-    private val burgerUpdateFrequencyInSeconds = 600
-    private val foursquarePlaceRequest = 50
+    private val burgerUpdateFrequencyInSeconds = 30
+    private val foursquarePlaceRequest = 10
 
     private fun transformFoursquarePhotoListToURLList(foursquarePhotos: List<FoursquarePhoto>): MutableList<String> {
         val photoURLs = mutableListOf<String>()

@@ -13,19 +13,26 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
+
+
+//TODO tests and error handling
 fun main() {
 
+    val serverPort: Int = System.getenv("PORT").toInt()
     val connectionString: ConnectionString? = System.getenv("MONGODB_URI")?.let {
         ConnectionString("$it?retryWrites=false")
     }
+    val foursquareAPIToken = System.getenv("FOURSQUARE_API_TOKEN")
 
     val client = if (connectionString != null) KMongo.createClient(connectionString).coroutine else KMongo.createClient().coroutine
-    val database = client.getDatabase(connectionString?.database ?: "shoppingList")
-    val collection = database.getCollection<ShoppingListItem>()
+    val database = client.getDatabase(connectionString?.database ?: "burgerList")
+    val collection = database.getCollection<LocalBurgerItem>()
+
+    val burgerHelper = BurgerHelper(foursquareAPIToken)
 
 
 
-    embeddedServer(Netty, 9090){
+    embeddedServer(Netty, serverPort){
         install(ContentNegotiation) {
             json()
         }
@@ -40,6 +47,9 @@ fun main() {
         }
         routing {
             get("/") {
+
+                burgerHelper.checkForNewBurgers()
+
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
                     ContentType.Text.Html
@@ -48,20 +58,24 @@ fun main() {
             static("/") {
                 resources("")
             }
-            route(ShoppingListItem.path) {
+
+            //TODO add authentication
+            route(LocalBurgerItem.path) {
+
                 get {
                     call.respond(collection.find().toList())
                 }
                 post {
-                    collection.insertOne(call.receive<ShoppingListItem>())
+                    collection.insertOne(call.receive<LocalBurgerItem>())
                     call.respond(HttpStatusCode.OK)
                 }
                 delete("/{id}") {
                     val id = call.parameters["id"]?.toInt() ?: error("Invalid delete request")
-                    collection.deleteOne(ShoppingListItem::id eq id)
+                    collection.deleteOne(LocalBurgerItem::id eq id)
                     call.respond(HttpStatusCode.OK)
                 }
             }
+
         }
     }.start(wait = true)
 

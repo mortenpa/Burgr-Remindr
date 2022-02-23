@@ -2,10 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Full Stack Shopping List</title>
+    <title>Get your burgers here!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,600;1,300&display=swap" rel="stylesheet">
 </head>
+<!--TODO move style into separate .css file-->
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Raleway', sans-serif;
+    }
+    body,
+    html {
+        margin: 0 30px;
+        background-color: #f7f7f4;
+        font-size: 18px;
+        font-weight: 400;
+    }
+    .wrapper {
+        padding: 30px 100px;
+    }
+   .h1 {
+        font-size: 28px;
+   }
+   .h3 {
+        font-size: 20px;
+        margin: 0;
+    }
+    .h4 {
+        font-size: 16px;
+        font-weight: 300;
+        font-style: italic;
+        margin: 0;
+    }
+    .card {
+        position: relative;
+        width: 300px;
+        min-height: 200px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.30);
+        transition: box-shadow ease-in-out 100ms;
+        margin: 15px;
+    }
+    .card--new::after {
+        content: 'NEW';
+        display: flex;
+        font-weight: 600;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 35px;
+        color: #fff;
+        font-size: 14px;
+        background-color: #e2361f;
+        border-radius: 999px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+    }
+    .card:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.10);
+    }
+    .card__link {
+        display: block;
+        position: relative;
+        text-decoration: none;
+        color: #000;
+        width: 100%;
+    }
+    .card__link > * {
+        margin-top: 8px;
+    }
+    .card__image {
+        width: 100%;
+        border-radius: 3px;
+        margin-top: 0;
+    }
+    ul {
+        list-style: none;
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        margin: 0 -45px;
+    }
+</style>
 <body>
 <div id="root"></div>
-<script src="shoppinglist.js"></script>
+<script src="localBurgerList.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 //TODO tests and error handling
 fun main() {
 
+    //TODO check that required system environment variables are assigned
     val serverPort: Int = System.getenv("PORT").toInt()
     val connectionString: ConnectionString? = System.getenv("MONGODB_URI")?.let {
         ConnectionString("$it?retryWrites=false")
@@ -28,7 +29,10 @@ fun main() {
     val database = client.getDatabase(connectionString?.database ?: "burgerList")
     val collection = database.getCollection<LocalBurgerItem>()
 
-    val burgerHelper = BurgerHelper(foursquareAPIToken)
+    val burgerUpdateFrequencyInSeconds = System.getenv("BURGER_UPDATE_FREQUENCY_SECONDS").toInt()
+    val foursquarePlaceRequestCount = System.getenv("BURGER_REQUEST_COUNT_FOURSQUARE").toInt()
+    val burgerHelper = BurgerHelper(foursquareAPIToken, burgerUpdateFrequencyInSeconds, foursquarePlaceRequestCount)
+
 
 
 
@@ -40,6 +44,7 @@ fun main() {
             method(HttpMethod.Get)
             method(HttpMethod.Post)
             method(HttpMethod.Delete)
+            method(HttpMethod.Put)
             anyHost()
         }
         install(Compression) {

@@ -3,10 +3,10 @@ import org.litote.kmongo.formatJson
 import java.time.Duration
 import java.time.Instant
 
-class BurgerHelper constructor(private val foursquareAPIToken: String){
+class BurgerHelper constructor(private val foursquareAPIToken: String,
+                               private val burgerUpdateFrequencyInSeconds: Int,
+                               private val foursquarePlaceRequest: Int){
     private var burgersPreviouslyUpdated = Instant.now()
-    private val burgerUpdateFrequencyInSeconds = 30
-    private val foursquarePlaceRequest = 10
 
     private fun transformFoursquarePhotoListToURLList(foursquarePhotos: List<FoursquarePhoto>): MutableList<String> {
         val photoURLs = mutableListOf<String>()
@@ -18,7 +18,7 @@ class BurgerHelper constructor(private val foursquareAPIToken: String){
 
     private fun findDateFromPhotoList(fourSquarePhotos: List<FoursquarePhoto>, photoURL: String): String{
         for (photo in fourSquarePhotos){
-            if(photo.fullURL == photoURL)
+            if (photo.fullURL == photoURL)
                 return(photo.created_at)
         }
         return("")
@@ -30,21 +30,20 @@ class BurgerHelper constructor(private val foursquareAPIToken: String){
         val foursquarePlaces = getFoursquarePlaces(foursquareAPIToken, foursquarePlaceRequest).results
 
         for (place in foursquarePlaces){
-
             val fourSquarePhotos = getFourSquarePhotos(foursquareAPIToken, place.fsq_id)
             val possibleBurgerPhotos = transformFoursquarePhotoListToURLList(fourSquarePhotos)
 
+            val burgerResult = burgerInlistOfPhotos(possibleBurgerPhotos)
             //TODO fix this hack
-            val burgerPhotoURLSplit = burgerInlistOfPhotos(possibleBurgerPhotos).split("urlWithBurger\":\"")
+            val burgerPhotoURLSplit = burgerResult.split("urlWithBurger\":\"")
             if (burgerPhotoURLSplit.size > 1){
                 val burgerPhotoURL = burgerPhotoURLSplit[1].replace("\"}","")
                 val localBurger: LocalBurgerItem = LocalBurgerItem(burgerPhotoURL.toString(), place.name, findDateFromPhotoList(fourSquarePhotos, burgerPhotoURL))
+                //TODO update insert of delete-add
                 deleteBurgerListItem(localBurger)
                 addBurgerListItem(localBurger)
             }
         }
-
-
     }
 
     //update burgers every n minutes

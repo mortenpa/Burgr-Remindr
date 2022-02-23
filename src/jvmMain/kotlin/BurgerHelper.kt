@@ -6,7 +6,8 @@ import java.time.Instant
 class BurgerHelper constructor(private val foursquareAPIToken: String,
                                private val burgerUpdateFrequencyInSeconds: Int,
                                private val foursquarePlaceRequest: Int){
-    private var burgersPreviouslyUpdated = Instant.now()
+    private var burgersPreviouslyUpdated: Instant = Instant.now()
+    private val latitudeLongitude: String = System.getenv("latitudeLongitude")
 
     private fun transformFoursquarePhotoListToURLList(foursquarePhotos: List<FoursquarePhoto>): MutableList<String> {
         val photoURLs = mutableListOf<String>()
@@ -25,15 +26,15 @@ class BurgerHelper constructor(private val foursquareAPIToken: String,
     }
 
     private suspend fun processNewBurgers(){
-
         //TODO support for more than 50 places (needs multiple API calls)
-        val foursquarePlaces = getFoursquarePlaces(foursquareAPIToken, foursquarePlaceRequest).results
+        val foursquarePlaces = getFoursquarePlaces(foursquareAPIToken, latitudeLongitude, foursquarePlaceRequest).results
 
         for (place in foursquarePlaces){
             val fourSquarePhotos = getFourSquarePhotos(foursquareAPIToken, place.fsq_id)
             val possibleBurgerPhotos = transformFoursquarePhotoListToURLList(fourSquarePhotos)
 
             val burgerResult = burgerInlistOfPhotos(possibleBurgerPhotos)
+            println(place.name + " (" + place.fsq_id + "): " + burgerResult)
             //TODO fix this hack
             val burgerPhotoURLSplit = burgerResult.split("urlWithBurger\":\"")
             if (burgerPhotoURLSplit.size > 1){

@@ -2,9 +2,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 
-suspend fun getFoursquarePlaces(accessToken: String, placeCount: Int): FoursquarePlaceResponse {
+suspend fun getFoursquarePlaces(accessToken: String,
+                                latitudeLongitude: String,
+                                placeCount: Int): FoursquarePlaceResponse {
 
-    return jsonClient.get("https://api.foursquare.com/v3/places/search?query=burger&ll=58.378025%2C26.728493&fields=fsq_id%2Cname&limit=$placeCount") {
+    return jsonClient.get("https://api.foursquare.com/v3/places/search?query=burger&ll=$latitudeLongitude&fields=fsq_id%2Cname&limit=$placeCount") {
         headers {
             append(HttpHeaders.Accept, "application/json")
             append(HttpHeaders.Authorization, accessToken)

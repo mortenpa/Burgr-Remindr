@@ -24,7 +24,7 @@ val App = FC<Props> {
     div {
         className="wrapper"
         h1 {
-            +"Tartu's newest burgers!"
+            +"Newest burgers!"
             className="h1"
         }
         ul {

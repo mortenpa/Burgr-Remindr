@@ -1,1 +1,1 @@
-web: ./build/install/burgr-remindr/bin/burgr-remindr
+web: ./build/install/localBurgerList/bin/localBurgerList
